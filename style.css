@@ -1,11 +1,3 @@
-body {
-  background-color: #AAA
-}
-
 .active_hand {
   width: 150px;
-}
-
-#gameWrapper {
-  margin: 0 auto;
 }

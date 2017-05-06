@@ -40,14 +40,19 @@ $('#startBtn').click(function() {
         })
       })
     })
-
-
-
   })
 })
 
-$('#drawCard').click(() =>{
+
+// Draw Card Operations
+$('#drawCard').click(() => {
   $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/player_hand/draw/`, (result, err) => {
     console.log('result', result)
+
+    // Update cards remaining in pile
+    $('#playerCardCount').text(result.piles.player_hand.remaining)
+
+    // Display the card to compare
+    $('#playerCard').attr('src', result.cards[0].image)
   })
 })

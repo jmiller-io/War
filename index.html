@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <title>JavaScript War</title>
   </head>
   <body>
-    <button id="startBtn">Start Game</button>
-    <button id="drawCard">Draw Card</button>
-    <div id="gameWrapper" class="">
+    <div id="wrapper" class="container-fluid">
+      <div class="row">
+          <button id="startBtn">Start Game</button>
+          <button id="drawCard">Draw Card</button>
+      </div>
       <div id="AI_Hand">
         <h2>AI</h2>
         <p>Card Count <span id="aiCardCount"></span></p>
@@ -17,7 +20,7 @@
       <div id="Player_Hand">
         <h2>Player</h2>
         <p>Card Count <span id="playerCardCount"></span></p>
-        <img class="active_hand" src=""/>
+        <img class="active_hand" id="playerCard" src=""/>
       </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
