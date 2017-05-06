@@ -5,3 +5,7 @@ body {
 .active_hand {
   width: 150px;
 }
+
+#gameWrapper {
+  margin: 0 auto;
+}
