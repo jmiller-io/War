@@ -122,9 +122,13 @@ var convertFaceCardToNum = (cardCode) => {
 var winLogic = (p, b) => {
   if (p < b) {
     alert('The bot has a better hand')
+
   } else if (p > b) {
     alert('User has a better hand')
   } else {
     alert('Its War!')
   }
 }
+
+
+var depositCardsInWinnersPile = () => {}
