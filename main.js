@@ -82,53 +82,7 @@ $('#drawCard').click(() => {
 })
 
 
-// A=14 K=13 Q=12 J=11 0=10
 
-// Logic for determining winning hand
-var determineWinningCard = (p, b) => {
-  console.log('determining winning card')
-  // console.log(p, b)
-  let pValue = convertFaceCardToNum(p.code.charAt(0))
-  let bValue = convertFaceCardToNum(b.code.charAt(0))
-  console.log('pValue ', pValue, 'bValue, ', bValue)
-  setTimeout(winLogic(pValue, bValue), 5000)
-
-}
-
-
-var convertFaceCardToNum = (cardCode) => {
-  switch(cardCode) {
-    case '0':
-      return 10;
-      break;
-    case 'J':
-      return 11;
-      break;
-    case 'Q':
-      return 12;
-      break;
-    case 'K':
-      return 13;
-      break;
-    case 'A':
-      return 14;
-      break;
-    default:
-      return cardCode;
-      break;
-  }
-}
-
-var winLogic = (p, b) => {
-  if (p < b) {
-    alert('The bot has a better hand')
-
-  } else if (p > b) {
-    alert('User has a better hand')
-  } else {
-    alert('Its War!')
-  }
-}
 
 
 var depositCardsInWinnersPile = () => {}
