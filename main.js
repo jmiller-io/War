@@ -48,11 +48,16 @@ $('#startBtn').click(function() {
 $('#drawCard').click(() => {
   $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/player_hand/draw/`, (result, err) => {
     console.log('result', result)
-
     // Update cards remaining in pile
     $('#playerCardCount').text(result.piles.player_hand.remaining)
-
     // Display the card to compare
-    $('#playerCard').attr('src', result.cards[0].image)
+    $('#player_card').attr('src', result.cards[0].image)
+  })
+  $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/ai_hand/draw/`, (result, err) => {
+    console.log('result', result)
+    // Update cards remaining in pile
+    $('#aiCardCount').text(result.piles.ai_hand.remaining)
+    // Display the card to compare
+    $('#ai_card').attr('src', result.cards[0].image)
   })
 })
