@@ -85,4 +85,4 @@ $('#drawCard').click(() => {
 
 
 
-var depositCardsInWinnersPile = () => {}
+
