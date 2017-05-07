@@ -1,63 +1,92 @@
 console.log('hi from main');
 
-// Deck details
+// Deck detbotls
 var deck_id;
 var remaining_cards;
+
+// Game data
+var user = {
+  wonLastHand: null
+}
+var bot = {
+  wonLastHand: null
+}
 
 $('#startBtn').click(function() {
   // Get a shuffled deck of cards from API
   $.get('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1', (result, err) => {
-    console.log(result)
+    //console.log(result)
     deck_id = result.deck_id
 
-    //Create the player hands
-    // AI Hand
+    //Create the user hands
+    // bot Hand
     $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/draw/?count=26`, (result, err) => {
-      console.log('result', result)
+      //console.log('result', result)
 
       result.cards.map((card) => {
         console.log(card.code)
 
-        // Add to AI Pile
-        $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/ai_hand/add/?cards=${card.code}`, (result, err) => {
-          console.log(result)
-          $('#aiCardCount').text(result.piles.ai_hand.remaining)
+        // Add to bot Pile
+        $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/bot_pile/add/?cards=${card.code}`, (result, err) => {
+          //console.log(result)
+          $('#botCardCount').text(result.piles.bot_pile.remaining)
         })
       })
     })
 
-    // Player Hand
+    // user Hand
     $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/draw/?count=26`, (result, err) => {
-      console.log('result', result)
+      //console.log('result', result)
 
       result.cards.map((card) => {
         console.log(card.code)
 
-        // Add to Player Pile
-        $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/player_hand/add/?cards=${card.code}`, (result, err) => {
-          console.log(result)
-          $('#playerCardCount').text(result.piles.player_hand.remaining)
+        // Add to user Pile
+        $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/user_pile/add/?cards=${card.code}`, (result, err) => {
+          //console.log(result)
+          $('#userCardCount').text(result.piles.user_pile.remaining)
         })
       })
     })
   })
 })
 
+var aCard;
+var pCard;
 
 // Draw Card Operations
 $('#drawCard').click(() => {
-  $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/player_hand/draw/`, (result, err) => {
+  $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/user_pile/draw/`, (result, err) => {
     console.log('result', result)
-    // Update cards remaining in pile
-    $('#playerCardCount').text(result.piles.player_hand.remaining)
+    // Update cards rembotning in pile
+    $('#userCardCount').text(result.piles.user_pile.remaining)
+
     // Display the card to compare
-    $('#player_card').attr('src', result.cards[0].image)
-  })
-  $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/ai_hand/draw/`, (result, err) => {
+    $('#user_card').attr('src', result.cards[0].image)
+
+    pCard = result.cards[0]
+  }).then('determineWinningCard')
+  $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/bot_pile/draw/`, (result, err) => {
     console.log('result', result)
-    // Update cards remaining in pile
-    $('#aiCardCount').text(result.piles.ai_hand.remaining)
+    aCard = result.cards[0]
+    // Update cards rembotning in pile
+    $('#botCardCount').text(result.piles.bot_pile.remaining)
     // Display the card to compare
-    $('#ai_card').attr('src', result.cards[0].image)
-  })
+    $('#bot_card').attr('src', result.cards[0].image)
+
+  }).then(determineWinningCard)
+  //determineWinningCard(aCard, pCard)
 })
+
+
+// Draw Card
+var drawCardFromPile = (user) => {
+  $.get(``)
+}
+
+
+// Logic for determining winning hand
+var determineWinningCard = (bot, user) => {
+  console.log('determining winning card')
+  console.log(bot, user)
+}
