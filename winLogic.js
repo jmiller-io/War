@@ -25,20 +25,16 @@ var convertFaceCardToNum = (cardCode) => {
 // Logic for determining winning hand
 var determineWinningCard = (p, b) => {
   console.log('determining winning card')
-  // console.log(p, b)
-  //console.log('pValue ', pValue, 'bValue, ', bValue)
   let pValue = convertFaceCardToNum(p.code.charAt(0))
   let bValue = convertFaceCardToNum(b.code.charAt(0))
   if (pValue < bValue) {
-    //console.log('winner is Bot with, ', b)
     let winningPlayer = 'bot';
     depositCardsInWinnersPile(winningPlayer, b, p)
   } else if (pValue > bValue) {
-    //console.log('winner is player with, ', p)
     let winningPlayer = 'user';
     depositCardsInWinnersPile(winningPlayer, p, b)
   } else {
-    //console.log('war')
+    console.log('war')
   }
 
 }
@@ -50,7 +46,7 @@ var depositCardsInWinnersPile = (winningPlayer, winnersCard, losersCard) => {
 
 // Add to user Pile
   $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${winningPlayer}_pile/add/?cards=${winnersCard.code},${losersCard.code}`, (result, err) => {
-    console.log(result)
+    //console.log(result)
     $('#userCardCount').text(result.piles.user_pile.remaining)
   })
 

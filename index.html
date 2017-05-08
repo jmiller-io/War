@@ -12,15 +12,18 @@
           <button id="startBtn">Start Game</button>
           <button id="drawCard">Draw Card</button>
       </div>
-      <div id="bot_Hand">
+      <div id="botWrapper">
         <h2>bot</h2>
         <p>Card Count <span id="botCardCount"></span></p>
         <img class="active_hand" id="bot_card" src=""/>
+        <div id="botHandWrapper">
+        </div>
       </div>
-      <div id="user_Hand">
+      <div id="userWrapper">
         <h2>user</h2>
         <p>Card Count <span id="userCardCount"></span></p>
-        <img class="active_hand" id="user_card" src=""/>
+        <div id="userHandWrapper">
+        </div>
       </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
