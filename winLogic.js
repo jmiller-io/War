@@ -25,6 +25,7 @@ var convertFaceCardToNum = (cardCode) => {
 // Logic for determining winning hand
 var determineWinningCard = (p, b) => {
   console.log('determining winning card')
+  console.log(p)
   let pValue = convertFaceCardToNum(p.code.charAt(0))
   let bValue = convertFaceCardToNum(b.code.charAt(0))
   if (pValue < bValue) {
