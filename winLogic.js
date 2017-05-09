@@ -30,25 +30,54 @@ var determineWinningCard = (p, b) => {
   let bValue = convertFaceCardToNum(b.code.charAt(0))
   if (pValue < bValue) {
     let winningPlayer = 'bot';
-    depositCardsInWinnersPile(winningPlayer, b, p)
+    console.log(winningPlayer + ' wins')
+    depositCardsInWinnersPile(winningPlayer, bot.currentHand, user.currentHand)
+    bot.currentHand = []
+    user.currentHand = []
   } else if (pValue > bValue) {
     let winningPlayer = 'user';
-    depositCardsInWinnersPile(winningPlayer, p, b)
+    console.log(winningPlayer + ' wins')
+    depositCardsInWinnersPile(winningPlayer, user.currentHand, bot.currentHand)
+    bot.currentHand = []
+    user.currentHand = []
   } else {
     console.log('war')
+    WarLogic();
   }
 
 }
 
 // Add cards to winners pile
 var depositCardsInWinnersPile = (winningPlayer, winnersCard, losersCard) => {
+  console.log('running deposit cards')
   // Get request to deposit cards
-//console.log(winningPlayer, winnersCard, losersCard)
+  console.log(winningPlayer, winnersCard, losersCard)
 
-// Add to user Pile
-  $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${winningPlayer}_pile/add/?cards=${winnersCard.code},${losersCard.code}`, (result, err) => {
-    //console.log(result)
-    $('#userCardCount').text(result.piles.user_pile.remaining)
+  // Deposit winners hand back in pile
+  winnersCard.map((card) => {
+    $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${winningPlayer}_pile/add/?cards=${card.code}`, (result, err) => {
+      console.log(err)
+      console.log('winner deposit', result)
+
+      // Update cards remaining in pile
+      $('#botCardCount').text(result.piles.bot_pile.remaining)
+    })
   })
 
+  // Deposit losers hand in winners pile
+  losersCard.map((card) => {
+    $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${winningPlayer}_pile/add/?cards=${card.code}`, (result, err) => {
+      console.log(err)
+      console.log('loser deposit', result)
+      // Update cards remaining in pile
+      $('#userCardCount').text(result.piles.user_pile.remaining)
+    })
+  })
+
+  // Add to user Pile
+  // $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${winningPlayer}_pile/add/?cards=${winnersCard.code},${losersCard.code}`, (result, err) => {
+  //   //console.log(result)
+  //   $('#userCardCount').text(result.piles.user_pile.remaining)
+  // })
 }
+

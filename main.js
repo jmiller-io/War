@@ -6,10 +6,10 @@ var remaining_cards;
 
 // Game data
 var user = {
-  wonLastHand: null
+  currentHand: []
 }
 var bot = {
-  wonLastHand: null
+  currentHand: []
 }
 
 $('#startBtn').click(function() {
@@ -59,9 +59,10 @@ $('#drawCard').click(() => {
     console.log('user draw')
     // Update cards remaining in pile
     $('#userCardCount').text(result.piles.user_pile.remaining)
+    user.currentHand.push(result.cards[0])
+    var pCard = user.currentHand[user.currentHand.length-1]
 
-    var pCard = result.cards[0]
-
+    console.log('the pcard', user.currentHand)
     // Display the card to compare
     let $handWrapper = $('#userHandWrapper');
       let $cardImg = $('<img>')
@@ -75,7 +76,8 @@ $('#drawCard').click(() => {
     $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/bot_pile/draw/`, (result, err) => {
       console.log('bot draw')
       //console.log('result', result)
-      var bCard = result.cards[0]
+      bot.currentHand.push(result.cards[0])
+      var bCard = bot.currentHand[bot.currentHand.length-1]
 
       // Update cards remaining in pile
       $('#botCardCount').text(result.piles.bot_pile.remaining)
@@ -96,36 +98,20 @@ $('#drawCard').click(() => {
 })
 
 
-// Draw card from pile
-var drawCardFromPile = (player, numTimes) => {
-  var jqxhr = $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${player}_pile/draw/?count=${numTimes}`)
-    .done(function() {
-    alert( "second success" );
-  })
-  //  (result) => {
-  //   let key = `${player}_pile`;
-  //   $(`#${player}CardCount`).text(result.piles[key].remaining)
-  //   result.cards.map((card) => {
-  //     let $handWrapper = $(`#${player}HandWrapper`);
-  //     let $cardImg = $('<img>')
-  //     $cardImg.attr({
-  //       src: card.image,
-  //       class: 'active_hand'
-  //     });
-  //     $handWrapper.append($cardImg)
-  //   });
-  //   console.log('res', result)
-  //   test = result.cards
-  // })
-  // return test
-};
-
 // Works
 var drawCardFromPile = (player, numTimes) => {
   $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${player}_pile/draw/?count=${numTimes}`, (result) => {
     let key = `${player}_pile`;
     $(`#${player}CardCount`).text(result.piles[key].remaining)
     result.cards.map((card) => {
+      // Add to Current Hand
+      if (player === 'user') {
+        user.currentHand.push(card)
+      } else if (player === 'bot') {
+        bot.currentHand.push(card)
+      }
+
+      // Add to DOM
       let $handWrapper = $(`#${player}HandWrapper`);
       let $cardImg = $('<img>')
       $cardImg.attr({
@@ -137,4 +123,18 @@ var drawCardFromPile = (player, numTimes) => {
   })
 };
 
+
+// War Logic
+var WarLogic = () => {
+  // Draw three cards and add to current hand for user
+  drawCardFromPile('user', 3)
+  drawCardFromPile('bot', 3)
+  determineWinningCard(user.currentHand[user.currentHand.length-1], bot.currentHand[bot.currentHand.length-1])
+}
+
+var CheckWarWin = (userCards, botCards) => {
+  let lastUCard = userCards[userCards.length-1]
+  let lastBCard = botCards[botCards.length-1]
+  determineWinningCard(lastUCard, lastBCard)
+}
 
