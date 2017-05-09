@@ -54,49 +54,78 @@ $('#startBtn').click(function() {
 // Draw Card Operations
 $('#drawCard').click(() => {
 
-  // not yet working
-  var userHand = drawCardFromPile('user', 1)
-  var botHand = drawCardFromPile('bot', 1);
-
-  // Determine winning Card
-  determineWinningCard(userHand[userHand.length-1], botHand[botHand.length-1])
-  //b = drawCardFromPile('bot', 1)
-
   // Draw card for user
-  // $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/user_pile/draw/`, (result, err) => {
-  //   console.log(' draw result', result)
-  //   // Update cards remaining in pile
-  //   $('#userCardCount').text(result.piles.user_pile.remaining)
+  $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/user_pile/draw/`, (result, err) => {
+    console.log('user draw')
+    // Update cards remaining in pile
+    $('#userCardCount').text(result.piles.user_pile.remaining)
 
-  //   // Display the card to compare
-  //   $('#user_card').attr('src', result.cards[0].image)
+    var pCard = result.cards[0]
 
-  //   pCard = result.cards[0]
+    // Display the card to compare
+    let $handWrapper = $('#userHandWrapper');
+      let $cardImg = $('<img>')
+      $cardImg.attr({
+        src: pCard.image,
+        class: 'active_hand'
+      });
+      $handWrapper.append($cardImg)
 
-  //   $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/bot_pile/draw/`, (result, err) => {
-  //     //console.log('result', result)
-  //     bCard = result.cards[0]
 
-  //     // Update cards remaining in pile
-  //     $('#botCardCount').text(result.piles.bot_pile.remaining)
-  //     // Display the card to compare
-  //     $('#bot_card').attr('src', result.cards[0].image)
+    $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/bot_pile/draw/`, (result, err) => {
+      console.log('bot draw')
+      //console.log('result', result)
+      var bCard = result.cards[0]
 
-  //     // Determine Winning Card
-  //     determineWinningCard(pCard, bCard)
-  //   })
-  // })
+      // Update cards remaining in pile
+      $('#botCardCount').text(result.piles.bot_pile.remaining)
+
+      // Display the card to compare
+      let $handWrapper = $('#botHandWrapper');
+      let $cardImg = $('<img>')
+      $cardImg.attr({
+        src: bCard.image,
+        class: 'active_hand'
+      });
+      $handWrapper.append($cardImg)
+
+      // Determine Winning Card
+      determineWinningCard(pCard, bCard)
+    })
+  })
 })
 
 
 // Draw card from pile
 var drawCardFromPile = (player, numTimes) => {
-  var allCardsDrawn = [];
+  var jqxhr = $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${player}_pile/draw/?count=${numTimes}`)
+    .done(function() {
+    alert( "second success" );
+  })
+  //  (result) => {
+  //   let key = `${player}_pile`;
+  //   $(`#${player}CardCount`).text(result.piles[key].remaining)
+  //   result.cards.map((card) => {
+  //     let $handWrapper = $(`#${player}HandWrapper`);
+  //     let $cardImg = $('<img>')
+  //     $cardImg.attr({
+  //       src: card.image,
+  //       class: 'active_hand'
+  //     });
+  //     $handWrapper.append($cardImg)
+  //   });
+  //   console.log('res', result)
+  //   test = result.cards
+  // })
+  // return test
+};
+
+// Works
+var drawCardFromPile = (player, numTimes) => {
   $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${player}_pile/draw/?count=${numTimes}`, (result) => {
-    let key = `${player}_pile`
+    let key = `${player}_pile`;
     $(`#${player}CardCount`).text(result.piles[key].remaining)
     result.cards.map((card) => {
-      allCardsDrawn.push(card)
       let $handWrapper = $(`#${player}HandWrapper`);
       let $cardImg = $('<img>')
       $cardImg.attr({
@@ -105,9 +134,7 @@ var drawCardFromPile = (player, numTimes) => {
       });
       $handWrapper.append($cardImg)
     });
-  });
-  return allCardsDrawn
+  })
 };
-
 
 
