@@ -146,6 +146,7 @@ var addCardsToDOM = (cards) => {
 
 // War Logic
 var WarLogic = () => {
-  addCardsToDOM(drawCardsFromPile(3))
+  addCardsToDOM(drawCardFromPile(3))
+  determineWinningCard(player.currentHand[player.currentHand.length-1], bot.currentHand[bot.currentHand.length-1])
 }
 

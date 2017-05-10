@@ -34,12 +34,14 @@ var determineWinningCard = (p, b) => {
     depositCardsInWinnersPile(winningPerson, bot.currentHand, player.currentHand)
     bot.currentHand = []
     player.currentHand = []
+    if(!player.pile.length) {alert('Bot wins the Game')}
   } else if (pValue > bValue) {
     winningPerson = 'player';
     console.log(winningPerson + ' wins')
     depositCardsInWinnersPile(winningPerson, player.currentHand, bot.currentHand)
     bot.currentHand = []
     player.currentHand = []
+    if(!bot.pile.length) {alert('You win the Game')}
   } else {
     console.log('War!')
     WarLogic();
@@ -63,7 +65,7 @@ var depositCardsInWinnersPile = (winningPerson, winnersCurrentHand, losersCurren
 
   // Update DOM
   // Clear Cards from the DOM
-  setTimeout(function() {$('.active_hand').remove()}, 2500)
+  setTimeout(function() {$('.active_hand').remove()}, 2000)
 
   // Append Card Count for Player to DOM
   $('#playerCardCount').text(player.pile.length)
