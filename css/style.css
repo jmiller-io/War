@@ -1,3 +1,6 @@
+body {
+  background-image: url('../assets/bg_img.jpg')
+}
 .active_hand {
   width: 150px;
 }
