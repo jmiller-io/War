@@ -44,7 +44,7 @@ var determineWinningCard = (p, b) => {
     if(!bot.pile.length) {alert('You win the Game')}
   } else {
     console.log('War!')
-    WarLogic();
+    WarLogic()
   }
 
 }
@@ -65,7 +65,7 @@ var depositCardsInWinnersPile = (winningPerson, winnersCurrentHand, losersCurren
 
   // Update DOM
   // Clear Cards from the DOM
-  setTimeout(function() {$('.active_hand').remove()}, 2000)
+  setTimeout(function() {$('.active_hand').remove()}, 7000)
 
   // Append Card Count for Player to DOM
   $('#playerCardCount').text(player.pile.length)
