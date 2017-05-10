@@ -7,13 +7,12 @@ var remaining_cards;
 // Game data
 var player = {
   currentHand: [],
-  pile: [],
-  remaining_cards_in_pile: 0
+  pile: []
 }
+
 var bot = {
   currentHand: [],
-  pile: [],
-  remaining_cards_in_pile: 0
+  pile: []
 }
 
 $('#startBtn').click(function() {
@@ -27,7 +26,7 @@ $('#startBtn').click(function() {
       console.log('bot hand', result)
       bot.pile = result.cards
 
-      // Append Card Count for Bot Player to DOM
+      // Append Card Count for Bot  to DOM
       $('#botCardCount').text(bot.pile.length)
     })
 
@@ -36,7 +35,7 @@ $('#startBtn').click(function() {
       console.log('Players hand', result)
       player.pile = result.cards
 
-      // Append Card Count for Bot Player to DOM
+      // Append Card Count for Player to DOM
       $('#playerCardCount').text(player.pile.length)
     })
   })
@@ -49,7 +48,6 @@ $('#drawCard').click(() => {
   // Draw Player's Card
   console.log('Player draws card');
   player.currentHand.push(player.pile.shift())
-  player.remaining_cards_in_pile = player.pile.length-player.currentHand.length
 
   // Append Player card to DOM
   let $playerHandWrapper = $('#playerHandWrapper');
@@ -60,12 +58,12 @@ $('#drawCard').click(() => {
       class: 'active_hand'
     });
     $playerHandWrapper.append($card);
+    $('#playerCardCount').text(player.pile.length)
   })
 
   // Draw Player's Card
   console.log('bot draws card');
   bot.currentHand.push(bot.pile.shift())
-  bot.remaining_cards_in_pile = bot.pile.length-bot.currentHand.length
 
   // Append bot card to DOM
   let $botHandWrapper = $('#botHandWrapper');
@@ -76,92 +74,78 @@ $('#drawCard').click(() => {
       class: 'active_hand'
     });
     $botHandWrapper.append($card);
+    $('#botCardCount').text(bot.pile.length)
   })
 
   determineWinningCard(player.currentHand[0], bot.currentHand[0])
-
-
-  // // Draw card for user
-  // $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/user_pile/draw/`, (result, err) => {
-  //   console.log('user draw')
-  //   // Update cards remaining in pile
-  //   $('#userCardCount').text(result.piles.user_pile.remaining)
-  //   user.currentHand.push(result.cards[0])
-  //   var pCard = user.currentHand[user.currentHand.length-1]
-
-  //   console.log('the pcard', user.currentHand)
-  //   // Display the card to compare
-  //   let $handWrapper = $('#playerHandWrapper');
-  //     let $cardImg = $('<img>')
-  //     $cardImg.attr({
-  //       src: pCard.image,
-  //       class: 'active_hand'
-  //     });
-  //     $handWrapper.append($cardImg)
-
-
-  //   $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/bot_pile/draw/`, (result, err) => {
-  //     console.log('bot draw')
-  //     //console.log('result', result)
-  //     bot.currentHand.push(result.cards[0])
-  //     var bCard = bot.currentHand[bot.currentHand.length-1]
-
-  //     // Update cards remaining in pile
-  //     $('#botCardCount').text(result.piles.bot_pile.remaining)
-
-  //     // Display the card to compare
-  //     let $handWrapper = $('#botHandWrapper');
-  //     let $cardImg = $('<img>')
-  //     $cardImg.attr({
-  //       src: bCard.image,
-  //       class: 'active_hand'
-  //     });
-  //     $handWrapper.append($cardImg)
-
-  //     // Determine Winning Card
-  //     determineWinningCard(pCard, bCard)
-  //   })
-  // })
 })
 
 
-// Works
-var drawCardFromPile = (player, numTimes) => {
-  $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${player}_pile/draw/?count=${numTimes}`, (result) => {
-    let key = `${player}_pile`;
-    $(`#${player}CardCount`).text(result.piles[key].remaining)
-    result.cards.map((card) => {
-      // Add to Current Hand
-      if (player === 'user') {
-        user.currentHand.push(card)
-      } else if (player === 'bot') {
-        bot.currentHand.push(card)
-      }
+var drawCardFromPile = (numTimes) => {
+  // Player
+  let playerCards = player.pile.splice(0, numTimes);
+  player.currentHand = [...player.currentHand, ...playerCards]
+  let botCards = bot.pile.splice(0, numTimes);
+  bot.currentHand = [...bot.currentHand, ...botCards]
 
-      // Add to DOM
-      let $handWrapper = $(`#${player}HandWrapper`);
-      let $cardImg = $('<img>')
-      $cardImg.attr({
-        src: card.image,
-        class: 'active_hand'
-      });
-      $handWrapper.append($cardImg)
-    });
-  })
+  // $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${player}_pile/draw/?count=${numTimes}`, (result) => {
+  //   let key = `${player}_pile`;
+  //   $(`#${player}CardCount`).text(result.piles[key].remaining)
+  //   result.cards.map((card) => {
+  //     // Add to Current Hand
+  //     if (player === 'user') {
+  //       user.currentHand.push(card)
+  //     } else if (player === 'bot') {
+  //       bot.currentHand.push(card)
+  //     }
+
+  //     // Add to DOM
+  //     let $handWrapper = $(`#${player}HandWrapper`);
+  //     let $cardImg = $('<img>')
+  //     $cardImg.attr({
+  //       src: card.image,
+  //       class: 'active_hand'
+  //     });
+  //     $handWrapper.append($cardImg)
+  //   });
+  // })
+  cards = {
+    playerCards: playerCards,
+    botCards: botCards
+  };
+  return cards;
 };
 
 
-// War Logic
-var WarLogic = () => {
-  // Draw three cards and add to current hand for user
-  drawCardFromPile('user', 3)
-  drawCardFromPile('bot', 3)
-  determineWinningCard(user.currentHand[user.currentHand.length-1], bot.currentHand[bot.currentHand.length-1])
+// Update DOM
+var addCardsToDOM = (cards) => {
+  // Player
+  cards.playerCards.map((card) => {
+    let $handWrapper = $('#playerHandWrapper');
+    let $cardImg = $('<img>')
+    $cardImg.attr({
+      src: card.image,
+      class: 'active_hand'
+    });
+    $('#playerCardCount').text(player.pile.length)
+    $handWrapper.append($cardImg)
+  })
+
+  // Bot
+  cards.botCards.map((card) => {
+    let $handWrapper = $('#botHandWrapper');
+    let $cardImg = $('<img>')
+    $cardImg.attr({
+      src: card.image,
+      class: 'active_hand'
+    });
+    $handWrapper.append($cardImg)
+    $('#botCardCount').text(bot.pile.length)
+  })
 }
 
-var CheckWarWin = (userCards, botCards) => {
-  let lastUCard = userCards[userCards.length-1]
-  let lastBCard = botCards[botCards.length-1]
-  determineWinningCard(lastUCard, lastBCard)
+// War Logic
+var WarLogic = () => {
+  addCardsToDOM(drawCardsFromPile(3))
 }
 

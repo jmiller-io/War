@@ -41,8 +41,8 @@ var determineWinningCard = (p, b) => {
     bot.currentHand = []
     player.currentHand = []
   } else {
-    console.log('war')
-    //WarLogic();
+    console.log('War!')
+    WarLogic();
   }
 
 }
@@ -61,44 +61,14 @@ var depositCardsInWinnersPile = (winningPerson, winnersCurrentHand, losersCurren
   bot.currentHand = [];
   player.currentHand = [];
 
-  // Update DOM for Player and bot's Pile Count
-  //player.remaining_cards_in_pile = player.pile.length-player.currentHand.length
-  //bot.remaining_cards_in_pile = bot.pile.length-bot.currentHand.length
+  // Update DOM
+  // Clear Cards from the DOM
+  setTimeout(function() {$('.active_hand').remove()}, 2500)
 
-  // Append Card Count for Bot Player to DOM
+  // Append Card Count for Player to DOM
   $('#playerCardCount').text(player.pile.length)
 
   // Append Card Count for Bot Player to DOM
   $('#botCardCount').text(bot.pile.length)
-
-  // // Get request to deposit cards
-  // console.log(winningPlayer, winnersCard, losersCard)
-
-  // // Deposit winners hand back in pile
-  // winnersCard.map((card) => {
-  //   $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${winningPlayer}_pile/add/?cards=${card.code}`, (result, err) => {
-  //     console.log(err)
-  //     console.log('winner deposit', result)
-
-  //     // Update cards remaining in pile
-  //     $('#botCardCount').text(result.piles.bot_pile.remaining)
-  //   })
-  // })
-
-  // // Deposit losers hand in winners pile
-  // losersCard.map((card) => {
-  //   $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${winningPlayer}_pile/add/?cards=${card.code}`, (result, err) => {
-  //     console.log(err)
-  //     console.log('loser deposit', result)
-  //     // Update cards remaining in pile
-  //     $('#userCardCount').text(result.piles.user_pile.remaining)
-  //   })
-  // })
-
-  // Add to user Pile
-  // $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${winningPlayer}_pile/add/?cards=${winnersCard.code},${losersCard.code}`, (result, err) => {
-  //   //console.log(result)
-  //   $('#userCardCount').text(result.piles.user_pile.remaining)
-  // })
 }
 
