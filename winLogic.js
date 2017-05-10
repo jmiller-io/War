@@ -31,13 +31,13 @@ var determineWinningCard = (p, b) => {
   if (pValue < bValue) {
     winningPerson = 'bot';
     console.log(winningPerson + ' wins')
-    depositCardsInWinnersPile(winningPerson, bot.currentHand, person.currentHand)
+    depositCardsInWinnersPile(winningPerson, bot.currentHand, player.currentHand)
     bot.currentHand = []
     player.currentHand = []
   } else if (pValue > bValue) {
-    winningPerson = 'user';
+    winningPerson = 'player';
     console.log(winningPerson + ' wins')
-    //depositCardsInWinnersPile(winningPlayer, user.currentHand, bot.currentHand)
+    depositCardsInWinnersPile(winningPerson, player.currentHand, bot.currentHand)
     bot.currentHand = []
     player.currentHand = []
   } else {
@@ -57,8 +57,19 @@ var depositCardsInWinnersPile = (winningPerson, winnersCurrentHand, losersCurren
     player.pile = [...player.pile, ...winnersCurrentHand, ...losersCurrentHand]
   }
 
+  console.log('clearing hand');
   bot.currentHand = [];
   player.currentHand = [];
+
+  // Update DOM for Player and bot's Pile Count
+  //player.remaining_cards_in_pile = player.pile.length-player.currentHand.length
+  //bot.remaining_cards_in_pile = bot.pile.length-bot.currentHand.length
+
+  // Append Card Count for Bot Player to DOM
+  $('#playerCardCount').text(player.pile.length)
+
+  // Append Card Count for Bot Player to DOM
+  $('#botCardCount').text(bot.pile.length)
 
   // // Get request to deposit cards
   // console.log(winningPlayer, winnersCard, losersCard)

@@ -26,20 +26,18 @@ $('#startBtn').click(function() {
     $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/draw/?count=26`, (result, err) => {
       console.log('bot hand', result)
       bot.pile = result.cards
-      bot.remaining_cards_in_pile = bot.pile.length
 
       // Append Card Count for Bot Player to DOM
-      $('#botCardCount').text(bot.remaining_cards_in_pile)
+      $('#botCardCount').text(bot.pile.length)
     })
 
     // Deal Player's Hand
     $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/draw/?count=26`, (result, err) => {
       console.log('Players hand', result)
       player.pile = result.cards
-      player.remaining_cards_in_pile = player.pile.length
 
       // Append Card Count for Bot Player to DOM
-      $('#playerCardCount').text(bot.remaining_cards_in_pile)
+      $('#playerCardCount').text(player.pile.length)
     })
   })
 })
