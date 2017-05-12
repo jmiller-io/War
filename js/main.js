@@ -46,7 +46,6 @@ $('#startBtn').click(function() {
 $('#drawCard').click(() => {
 
   // Draw Player's Card
-  console.log('Player draws card');
   player.currentHand.push(player.pile.shift())
 
   // Append Player card to DOM
@@ -62,7 +61,6 @@ $('#drawCard').click(() => {
   })
 
   // Draw Player's Card
-  console.log('bot draws card');
   bot.currentHand.push(bot.pile.shift())
 
   // Append bot card to DOM
