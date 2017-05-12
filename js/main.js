@@ -45,39 +45,40 @@ $('#startBtn').click(function() {
 // Draw Card Operations
 $('#drawCard').click(() => {
 
-  // Draw Player's Card
-  console.log('Player draws card');
-  player.currentHand.push(player.pile.shift())
+  addCardsToDOM(drawCardFromPile(3))
+  // // Draw Player's Card
+  // console.log('Player draws card');
+  // player.currentHand.push(player.pile.shift())
 
-  // Append Player card to DOM
-  let $playerHandWrapper = $('#playerHandWrapper');
-  player.currentHand.map((card) => {
-    let $card = $('<img>');
-    $card.attr({
-      src: card.image,
-      class: 'active_hand'
-    });
-    $playerHandWrapper.append($card);
-    $('#playerCardCount').text(player.pile.length)
-  })
+  // // Append Player card to DOM
+  // let $playerHandWrapper = $('#playerHandWrapper');
+  // player.currentHand.map((card) => {
+  //   let $card = $('<img>');
+  //   $card.attr({
+  //     src: card.image,
+  //     class: 'active_hand'
+  //   });
+  //   $playerHandWrapper.append($card);
+  //   $('#playerCardCount').text(player.pile.length)
+  // })
 
-  // Draw Player's Card
-  console.log('bot draws card');
-  bot.currentHand.push(bot.pile.shift())
+  // // Draw Player's Card
+  // console.log('bot draws card');
+  // bot.currentHand.push(bot.pile.shift())
 
-  // Append bot card to DOM
-  let $botHandWrapper = $('#botHandWrapper');
-  bot.currentHand.map((card) => {
-    let $card = $('<img>');
-    $card.attr({
-      src: card.image,
-      class: 'active_hand'
-    });
-    $botHandWrapper.append($card);
-    $('#botCardCount').text(bot.pile.length)
-  })
+  // // Append bot card to DOM
+  // let $botHandWrapper = $('#botHandWrapper');
+  // bot.currentHand.map((card) => {
+  //   let $card = $('<img>');
+  //   $card.attr({
+  //     src: card.image,
+  //     class: 'active_hand'
+  //   });
+  //   $botHandWrapper.append($card);
+  //   $('#botCardCount').text(bot.pile.length)
+  // })
 
-  determineWinningCard(player.currentHand[0], bot.currentHand[0])
+  // determineWinningCard(player.currentHand[0], bot.currentHand[0])
 })
 
 
@@ -88,34 +89,12 @@ var drawCardFromPile = (numTimes) => {
   let botCards = bot.pile.splice(0, numTimes);
   bot.currentHand = [...bot.currentHand, ...botCards]
 
-  // $.get(`https://deckofcardsapi.com/api/deck/${deck_id}/pile/${player}_pile/draw/?count=${numTimes}`, (result) => {
-  //   let key = `${player}_pile`;
-  //   $(`#${player}CardCount`).text(result.piles[key].remaining)
-  //   result.cards.map((card) => {
-  //     // Add to Current Hand
-  //     if (player === 'user') {
-  //       user.currentHand.push(card)
-  //     } else if (player === 'bot') {
-  //       bot.currentHand.push(card)
-  //     }
-
-  //     // Add to DOM
-  //     let $handWrapper = $(`#${player}HandWrapper`);
-  //     let $cardImg = $('<img>')
-  //     $cardImg.attr({
-  //       src: card.image,
-  //       class: 'active_hand'
-  //     });
-  //     $handWrapper.append($cardImg)
-  //   });
-  // })
   cards = {
     playerCards: playerCards,
     botCards: botCards
   };
   return cards;
 };
-
 
 // Update DOM
 var addCardsToDOM = (cards) => {
@@ -134,7 +113,7 @@ var addCardsToDOM = (cards) => {
   // Bot
   cards.botCards.map((card) => {
     let $handWrapper = $('#botHandWrapper');
-    let $cardImg = $('<img>')
+    let $cardImg = $('<img>');
     $cardImg.attr({
       src: card.image,
       class: 'active_hand'
@@ -142,6 +121,22 @@ var addCardsToDOM = (cards) => {
     $handWrapper.append($cardImg)
     $('#botCardCount').text(bot.pile.length)
   })
+
+  // Position Cards
+  var activeCards = $('.active_hand');
+
+  activeCards.each(function(){
+    let prevSibling = $(this).prev()[0]
+    let prevSiblingPosition = $(prevSibling).css('left')
+    //prevSiblingPosition = prevSiblingPosition.replace('px', '');
+    if (prevSiblingPosition) {
+      let prevCardPos = prevSiblingPosition.replace('px', '');
+      console.log('prevCardPos', prevCardPos)
+      let pos = parseInt(prevCardPos) * 2
+      $(this).css('left', pos.toString().concat('px'))
+    }
+  })
+
 }
 
 // War Logic

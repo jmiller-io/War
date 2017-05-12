@@ -1,8 +1,10 @@
 body {
-  background-image: url('../assets/bg_img.jpg')
+  background-image: url('../assets/bg_img.jpg');
+  color: #FFF;
 }
 .active_hand {
   width: 150px;
+  position: relative;
 }
 
 #wrapper {
@@ -10,6 +12,3 @@ body {
   margin: 0 auto;
 }
 
-#userHandWrapper {
-  position: absolute;
-}
