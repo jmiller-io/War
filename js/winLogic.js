@@ -65,7 +65,7 @@ var depositCardsInWinnersPile = (winningPerson, winnersCurrentHand, losersCurren
 
   // Update DOM
   // Clear Cards from the DOM
-  //setTimeout(function() {$('.active_hand').remove()}, 1000)
+  setTimeout(function() {$('.active_hand').remove()}, 1000)
 
   // Append Card Count for Player to DOM
   $('#playerCardCount').text(player.pile.length)
